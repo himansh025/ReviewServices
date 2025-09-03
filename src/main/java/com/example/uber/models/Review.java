@@ -1,0 +1,1 @@
+package com.example.uber.models;import jakarta.persistence.Column;import jakarta.persistence.Entity;import jakarta.persistence.Table;import lombok.*;@Getter@Setter@NoArgsConstructor@AllArgsConstructor@Builder@Entity@Table(name = "booking_review")public class Review {    @Column(nullable = false)    private  String  content;    private  Double rating;}
