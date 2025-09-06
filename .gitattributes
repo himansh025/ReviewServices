@@ -1,3 +1,17 @@
-/gradlew text eol=lf
+# Ensure all text files are normalized
+* text=auto
+
+# Force Java files to always use LF (so GitHub renders correctly)
+*.java text eol=lf
+
+# Force shell scripts to use LF
+*.sh text eol=lf
+
+# Force batch scripts to use CRLF (Windows)
 *.bat text eol=crlf
+
+# Treat JAR, PNG, images, binaries as binary
 *.jar binary
+*.png binary
+*.jpg binary
+*.gif binary
