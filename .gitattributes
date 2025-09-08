@@ -1,0 +1,17 @@
+# Normalize all text files to CRLF in repo
+* text=auto eol=crlf
+
+# Java always CRLF
+*.java text eol=crlf
+
+# Shell scripts should stay LF (even on Windows)
+*.sh text eol=lf
+
+# Batch scripts CRLF (correct for Windows)
+*.bat text eol=crlf
+
+# Binaries
+*.jar binary
+*.png binary
+*.jpg binary
+*.gif binary
