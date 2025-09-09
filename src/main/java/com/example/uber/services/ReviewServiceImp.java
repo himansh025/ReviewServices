@@ -1,5 +1,6 @@
 package com.example.uber.services;
 
+import com.example.uber.dtos.ReviewDto;
 import com.example.uber.models.Review;
 import com.example.uber.repositories.BookingRepository;
 import com.example.uber.repositories.DriverRepository;
@@ -42,51 +43,37 @@ public class ReviewServiceImp implements ReviewService {
     }
 
 
-    /*
     @Override
-    public Boolean deleteReviewById(Long reviewId,Long bookingId) {
+    public Boolean deleteReviewById(Long reviewId) {
         try {
-            Booking booking=bookingRepository.findById(bookingId)
-                    .orElseThrow(() -> new RuntimeException("no booking is found for this booking id"));
-           Review review = booking.();
-            if (review == null || !review.getId().equals(reviewId)) {
-                throw new RuntimeException("Review not found or does not match booking");
-            }
-            booking.setReview(null);
-            reviewRepository.deleteById(reviewId);
+            Optional<Review> review = this.reviewRepository.findById(reviewId);
+            if (review == null) throw new RuntimeException("review not found");
+            this.reviewRepository.deleteById(reviewId);
             return true;
         } catch (Exception e) {
             System.out.println("Error deleting review: " + e.getMessage());
-            throw new RuntimeException(e);
+            return false;
         }
     }
-*/
 
-   /*
+
     @Override
-    public Review updateReviewById(Review review, Long bookingId) {
+    public Review updateReviewById(Review review, Long reviewId) {
         try {
-            Booking booking=bookingRepository.findById(bookingId)
-                    .orElseThrow(() -> new RuntimeException("no booking is found for this booking id"));
-
-            Review existingReview = booking.getReview();
-            if (existingReview == null) {
-                throw new RuntimeException("No review exists for this booking");
-            }
-
-            existingReview.setRating(review.getRating());
-            existingReview.setContent(review.getContent());
-            existingReview.setUpdatedAt(new Date()); // update timestamp
-
-            Optional<Review> rev = reviewRepository.findById(reviewId);
-
-            return review;
+            Optional<Review> oldReview = this.reviewRepository.findById(reviewId);
+            if (oldReview == null) throw new RuntimeException("review not found in db");
+            Review updated = oldReview.get();
+            updated.setRating(review.getRating());
+            updated.setContent(review.getContent());
+            System.out.println(review);
+            this.reviewRepository.save(updated);
+            return updated;
         } catch (Exception e) {
             System.out.println("Error deleting review: " + e.getMessage());
             throw new RuntimeException(e);
         }
     }
-     */
+
 
     @Override
     public List<Review> findAllByCreatedAtBefore(Date date) {
@@ -121,17 +108,9 @@ public class ReviewServiceImp implements ReviewService {
 
     @Override
     @Transactional
-    public Review postReview(Long id, Review review) {
+    public Review postReview(Review review) {
         try {
-//            Booking booking= bookingRepository.findById(id)
-//                    .orElseThrow(() -> new RuntimeException("Booking not found"));
-//            if(booking.getReview()!=null){
-//                throw new RuntimeException("Review Already exist for this booking");
-//            }
-            Review newReview = new Review();
-            newReview.setContent(review.getContent());
-            newReview.setRating(review.getRating());
-            return reviewRepository.save(newReview);
+            return reviewRepository.save(review);
         } catch (Exception e) {
             System.out.println("error during the posting the review" + e.getMessage());
             throw new RuntimeException(e);

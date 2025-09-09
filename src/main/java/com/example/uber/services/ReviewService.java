@@ -1,5 +1,6 @@
 package com.example.uber.services;
 
+import com.example.uber.dtos.ReviewDto;
 import com.example.uber.models.Review;
 
 import java.util.Date;
@@ -13,9 +14,9 @@ public interface ReviewService {
 
     public Optional<Review> findReviewById(Long id);
 
-//   public Boolean deleteReviewById(Long reviewId,Long bookingId);
+   public Boolean deleteReviewById(Long reviewId);
 
-//    public Review updateReviewById(Review review,Long bookingId);
+    public Review updateReviewById(Review review, Long reviewId);
 
     public List<Review> findAllByCreatedAtBefore(Date date);
 
@@ -25,6 +26,6 @@ public interface ReviewService {
 
 //    public  Review findReviewByBookingId(Long bookingId);
 
-    public Review postReview(Long id, Review review);
+    public Review postReview( Review review);
 
 }

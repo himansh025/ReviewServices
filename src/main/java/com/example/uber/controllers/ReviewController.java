@@ -30,22 +30,34 @@ public class ReviewController {
 
     @GetMapping("/allReview")
     public ResponseEntity<List<Review>> findAll() {
-        List<Review> reviews = reviewService.findAllReviews();
+        List<Review> reviews = this.reviewService.findAllReviews();
         return ResponseEntity.ok(reviews);
+
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Optional<Review>> findById(@PathVariable Long id) {
-        Optional<Review> reviews = reviewService.findReviewById(id);
-        return ResponseEntity.ok(reviews);
+    public ResponseEntity<?> findById(@PathVariable Long id) {
+        try {
+            Optional<Review> reviews = this.reviewService.findReviewById(id);
+            return new ResponseEntity<>(reviews, HttpStatus.OK);
+
+        } catch (Exception e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
+        }
+
     }
 
 
-//    @PutMapping("/{id}")
-//    public ResponseEntity<Review> updateReview(@RequestBody Review review, @PathVariable Long id) {
-//        Review updatedReview = reviewService.updateReviewById(review, id);
-//        return ResponseEntity.ok(updatedReview);
-//    }
+    @PutMapping("/{id}")
+    public ResponseEntity<?> updateReview(@RequestBody CreateReviewDto review, @PathVariable Long id) {
+        try {
+            Review review1= this.createReviewDtoToReviewAdapter.ConverDto(review);
+        Review updatedReview = reviewService.updateReviewById(review1, id);
+        return new  ResponseEntity<>(updatedReview,HttpStatus.OK);
+        }catch (Exception e){
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 
 //    @GetMapping("/{bookingId}")
 //    public ResponseEntity<Review>findReviewByBookingId ( @PathVariable Long bookingId) {
@@ -71,22 +83,29 @@ public class ReviewController {
         return ResponseEntity.ok(totalCount);
     }
 
-//    @DeleteMapping("/{reviewId}/{bookingId}")
-//    public Boolean deleteReviewById (@PathVariable Long reviewId,@PathVariable Long bookingId) {
-//   return reviewService.deleteReviewById(reviewId,bookingId);
-//    }
+    @DeleteMapping("/{reviewId}")
+    public ResponseEntity<?> deleteReviewById(@PathVariable Long reviewId) {
+        try {
+            boolean isDeleted= this.reviewService.deleteReviewById(reviewId);
+            if(!isDeleted)return new  ResponseEntity<>("enable to delete this review",HttpStatus.INTERNAL_SERVER_ERROR);
+            return  new ResponseEntity<>("Review Deleted Succesfully",HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
+        }
+    }
 
 
     @PostMapping("/add")
-    public ResponseEntity<?> CreateReview(@PathVariable Long id, CreateReviewDto review) {
+    public ResponseEntity<?> CreateReview(@RequestBody CreateReviewDto review) {
         Review incomingReview = this.createReviewDtoToReviewAdapter.ConverDto(review);
+        System.out.println(incomingReview);
         if (incomingReview == null) {
             return new ResponseEntity<>("Invalid Arguments", HttpStatus.BAD_REQUEST);
         }
-        Review newreview = this.reviewService.postReview(id, incomingReview);
+        Review newreview = this.reviewService.postReview(incomingReview);
         ReviewDto response = ReviewDto.builder()
                 .id(newreview.getId())
-                .booking(newreview.getBooking().getId())
+                .bookingId(newreview.getBooking().getId())
                 .content(newreview.getContent())
                 .rating(newreview.getRating())
                 .createdAt(newreview.getCreatedAt())

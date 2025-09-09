@@ -1,5 +1,6 @@
 package com.example.uber.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.Getter;
@@ -14,6 +15,7 @@ import java.util.List;
 @AllArgsConstructor
 //@Builder
 @Entity
+@JsonIgnoreProperties({"hibernateLazyInitializer","handler","bookings"})
 public class Passenger extends BaseModel {
 
 

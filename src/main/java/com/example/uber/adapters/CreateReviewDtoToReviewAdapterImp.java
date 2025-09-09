@@ -21,7 +21,8 @@ public class CreateReviewDtoToReviewAdapterImp implements CreateReviewDtoToRevie
 
     @Override
     public Review ConverDto(CreateReviewDto createReviewDto) {
-        Optional<Booking> booking= bookingRepository.findById(createReviewDto.getBooking().getId());
+        Optional<Booking> booking= bookingRepository.findById(createReviewDto.getBookingId());
+        System.out.printf("booking"+booking);
         return booking.map(value -> Review.builder()
                 .rating(createReviewDto.getRating())
                 .content(createReviewDto.getContent())

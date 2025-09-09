@@ -1,5 +1,6 @@
 package com.example.uber.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.Getter;
@@ -24,6 +25,14 @@ public class Review extends BaseModel {
     @JoinColumn(nullable = false)
     private Booking booking;
 
+    @Override
+    public String toString() {
+        return "Review{" +
+                "booking=" + booking.getId() +
+                ", content='" + content + '\'' +
+                ", rating=" + rating +
+                '}';
+    }
 
     @Column(nullable = false)
     private String content;

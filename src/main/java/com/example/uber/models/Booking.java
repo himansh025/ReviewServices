@@ -25,6 +25,17 @@ public class Booking extends BaseModel {
     @Temporal(value = TemporalType.TIMESTAMP)
     private Date endTime;
 
+    @Override
+    public String toString() {
+        return "Booking{" +
+                "bookingStatus=" + bookingStatus +
+                ", totalDistance=" + totalDistance +
+                ", driver=" + driver +
+                ", passenger=" + passenger +
+                ", id=" + id +
+                '}';
+    }
+
     private Long totalDistance;
 
 

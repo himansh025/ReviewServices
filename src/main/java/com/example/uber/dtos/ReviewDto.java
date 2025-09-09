@@ -11,7 +11,7 @@ import java.util.Date;
 public class ReviewDto {
 
         private  Long id;
-        private Long booking;
+        private Long bookingId;
         private  String  content;
         private  Double rating;
         private Date createdAt;
