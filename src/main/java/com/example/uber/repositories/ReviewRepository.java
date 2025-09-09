@@ -1,0 +1,41 @@
+package com.example.uber.repositories;
+
+import com.example.uber.models.Review;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+
+import java.util.Date;
+import java.util.List;
+
+@Repository
+public interface ReviewRepository extends JpaRepository<Review, Long> {
+
+    Integer countAllByRatingIsLessThanEqual(Integer givenRating);
+
+    List<Review> findAllByRatingIsLessThanEqual(Integer givenRating);
+
+    List<Review> findAllByCreatedAtBefore(Date date);
+
+
+//    @Query(nativeQuery = true ,value = "SELECT * FROM BOOKING b JOIN REVIEW r ON b.review_id =r.id where b.id=:bookingId");
+//    @Query("select b.review from Booking b where b.id=: bookingId");
+//    Review findReviewByBookingId(Long bookingId);
+
+    /*
+    @Query("select new package com.example.uber.repositories(b,p,d) from Booking  b  inner join Passenger p inner  join driver d")
+    custom findDriverPassengerReviewByBookingId(Long id);
+    */
+}
+
+/*class custom{
+
+    public Review review;
+    public Driver driver;
+    public Passenger passenger;
+
+     public custom(Review review,Passenger passenger,Driver driver) {
+         this.review = review;
+         this.passenger=passenger;
+         this.driver=driver;
+     }
+ } */
